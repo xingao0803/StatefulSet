@@ -33,7 +33,7 @@ spec:
         - name: regcred-local
   volumeClaimTemplates:
   - metadata:
-    name: sc-pvc
+      name: sc-pvc
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "standard"
