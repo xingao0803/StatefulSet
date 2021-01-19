@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: go-demo-cluster
+spec:
+  serviceName: headless-service
+  podManagementPolicy: OrderedReady
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: go-demo
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: go-demo
+        version: v1
+    spec:
+      containers:
+      - name: go-demo-pod
+        image: arti.local:9094/k8s-docker-release-local/demo/go-demo:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: sc-pvc
+          mountPath: /opt
+      volumes:
+      - name: sc-pvc
+        persistentVolumeClaim:
+          claimName: test-pvc
+      imagePullSecrets:
+        - name: regcred-local
+  volumeClaimTemplates:
+  - metadata:
+    name: sc-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
+      resources:
+        requests:
+          storage: 100Mi   
