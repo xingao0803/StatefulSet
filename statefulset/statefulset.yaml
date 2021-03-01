@@ -25,12 +25,8 @@ spec:
         volumeMounts:
         - name: sc-pvc
           mountPath: /opt
-      volumes:
-      - name: sc-pvc
-        persistentVolumeClaim:
-          claimName: test-pvc
       imagePullSecrets:
-        - name: regcred-local
+      - name: regcred-local
   volumeClaimTemplates:
   - metadata:
       name: sc-pvc
